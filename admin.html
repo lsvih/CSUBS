@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script src="js/url.js"></script>
+		<script type="text/javascript" charset="utf-8">
+	if (localStorage.adminuser == null || localStorage.adminuser == "") {
+				mui.toast("未登录");
+				var ws=plus.webview.currentWebview();
+	plus.webview.close(ws);
+				
+			}
+			
+			</script>
+		<style>
+			.mui-content {
+				position: fixed;
+				top: 46px;
+				background-color: #FFF;
+			}
+			.abxc {
+				top: 444px;
+			}
+			.kk{
+				position: absolute;
+				top: 70px;
+				padding: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar-top mui-bar">
+			<a class="mui-action-back mui-icon mui-icon-arrowleft mui-pull-left" id="index"></a>
+			<a class="mui-icon mui-pull-right mui-icon-search" id="search"></a>
+			<h4 class="mui-title">管理员</h4>
+
+		</header>
+		<div class="mui-text-left mui-card kk">
+			尊敬的管理员，欢迎您使用本系统！
+			<button class="mui-btn mui-btn-negative mui-btn-block" onclick="adminloginout();">退出登陆</button>
+	</div>
+	</body>
+	<script>
+
+	 document.getElementById('index').addEventListener('tap', function() {
+			mui.openWindow({
+				url: "index.html",
+				id: "index" 
+			});
+		})
+	 	 document.getElementById('search').addEventListener('tap', function() {
+			mui.openWindow({
+				url: "adminsearch.html",
+				id: "adminsearch" 
+			});
+		})
+		function adminloginout() {
+			var url = surl + "user/adminLoginOut";
+			mui.ajax(url, {
+				data: {'userId':localStorage.adminuser},
+				dataType: 'json',
+				type: 'post',
+				timeout: 10000,
+				success: function(data) {
+					localStorage.removeItem("adminuser");;
+					mui.toast('您已退出登陆！');
+				var ws=plus.webview.currentWebview();
+	plus.webview.close(ws);
+				},
+				error: function(XMLHttpRequest, xmlhttp, errorThrown, data) {
+					mui.toast("网络连接错误");
+					console.log("XMLHttpRequest.readyState.admin:" + XMLHttpRequest.readyState);
+					console.log("XMLHttpRequest.status:" + XMLHttpRequest.status);
+					return false;
+				}
+			})
+		}
+	</script>
+
+</html>

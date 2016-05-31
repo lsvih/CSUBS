@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script src="js/url.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			var jsonobj = {"userId": localStorage.tempsearchid};
+			var str = jsonobj;
+			var url = surl + "person/getMyInfo";
+			mui.ajax(url, {
+				data: str,
+				dataType: 'json',
+				type: 'post',
+				timeout: 10000,
+				success: function(data) {
+					document.getElementById("userid").innerText = localStorage.tempsearchid;
+					document.getElementById("username").innerText = data.name;
+					document.getElementById("sex").innerText = data.sex;
+					document.getElementById("grade").innerText = data.grade;
+					document.getElementById("major").innerText = data.major;
+					document.getElementById("class").innerText = data.clazz;
+					document.getElementById("work_in_class").innerText = data.work_in_class;
+					document.getElementById("birthday").innerText = data.birthday;
+					document.getElementById("phonenumber").innerText = data.phoneNumber;
+					document.getElementById("nation").innerText = data.nation;
+					document.getElementById("politics_status").innerText = data.politics_status;
+					document.getElementById("address").innerText = data.address;
+					document.getElementById("domitory").innerText = data.domitory;
+					document.getElementById("father_name").innerText = data.father_name;
+					document.getElementById("father_phone_number").innerText = data.father_phone_number;
+					document.getElementById("mother_name").innerText = data.mother_name;
+					document.getElementById("mother_phone_number").innerText = data.mother_phone_number;
+					document.getElementById("first_term_perform").innerText = data.first_term_perform;
+					document.getElementById("second_term_perform").innerText = data.second_term_perform;
+					document.getElementById("third_term_perform").innerText = data.third_term_perform;
+					document.getElementById("forth_term_perform").innerText = data.forth_term_perform;
+					document.getElementById("fivth_term_perform").innerText = data.fivth_term_perform;
+					document.getElementById("sixth_term_perform").innerText = data.sixth_term_perform;
+					document.getElementById("seventh_term_perform").innerText = data.seventh_term_perform;
+					document.getElementById("eight_term_perform").innerText = data.eight_term_perform;
+					
+				},
+				error: function(XMLHttpRequest, xmlhttp, errorThrown, data) {
+					mui.toast("网络连接错误");
+					console.log("XMLHttpRequest.readyState.my:" + XMLHttpRequest.readyState);
+					console.log("XMLHttpRequest.status:" + XMLHttpRequest.status);
+					return false;
+				}
+			});
+		</script>
+		<style>
+			.mui-content {
+				position: fixed;
+				top: 46px;
+				background-color: #FFF;
+			}
+			.abxc {
+				top: 444px;
+			}
+			.kk{
+				position: absolute;
+				top: 70px;
+				padding: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar-top mui-bar">
+			<a class=" mui-action-back mui-icon mui-icon-arrowleft mui-pull-left"></a>
+			<a class="mui-icon mui-pull-right mui-icon-search"></a>
+			<h4 class="mui-title">详细信息</h4>
+
+		</header>
+		
+			<div class="mui-text-left mui-card kk">
+			<h4>姓名：<span id="username">加载中...</span></h4>
+			<h4>学号：<span id="userid">加载中...</span></h4>
+			<h4>性别：<span id="sex">加载中...</span></h4>
+			<h4>年级：<span id="grade">加载中...</span></h4>
+			<h4>专业：<span id="major">加载中...</span></h4>
+			<h4>班级：<span id="class">加载中...</span></h4>
+			<h4>生日：<span id="birthday">加载中...</span></h4>
+			<h4>电话号码：<span id="phonenumber">加载中...</span></h4>
+			<h4>政治面貌：<span id="politics_status">加载中...</span></h4>
+			<h4>担任班干部：<span id="work_in_class">加载中...</span></h4>
+			<h4>地址：<span id="address">加载中...</span></h4>
+			<h4>宿舍：<span id="domitory">加载中...</span></h4>
+			<h4>祖籍：<span id="nation">加载中...</span></h4>
+			<h4>父亲名字：<span id="father_name">加载中...</span></h4>
+			<h4>父亲电话：<span id="father_phone_number">加载中...</span></h4>
+			<h4>母亲名字：<span id="mother_name">加载中...</span></h4>
+			<h4>母亲电话：<span id="mother_phone_number">加载中...</span></h4>
+			<h4>第一学期表现：<span id="first_term_perform">加载中...</span></h4>
+			<h4>第二学期表现：<span id="second_term_perform">加载中...</span></h4>
+			<h4>第三学期表现：<span id="third_term_perform">加载中...</span></h4>
+			<h4>第四学期表现：<span id="forth_term_perform">加载中...</span></h4>
+			<h4>第五学期表现：<span id="fivth_term_perform">加载中...</span></h4>
+			<h4>第六学期表现：<span id="sixth_term_perform">加载中...</span></h4>
+			<h4>第七学期表现：<span id="seventh_term_perform">加载中...</span></h4>
+			<h4>第八学期表现：<span id="eight_term_perform">加载中...</span></h4>
+			
+			</div>
+		
+	</body>
+
+
+</html>

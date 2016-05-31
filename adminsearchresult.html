@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<script src="js/url.js"></script>>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+				subpages: [{
+					id: 'result',
+					url: 'adminsearchresultd.html',
+					styles: {
+						top: '46px',
+						bottom: '0px',
+						bounce: 'vertical'
+					}
+				}]
+			});
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="help" class="mui-icon mui-icon-help  mui-pull-right"></a>
+			<h1 class="mui-title">搜索结果</h1>
+		</header>
+	</body>
+
+	<script>
+		document.getElementById('help').addEventListener('tap', function() {
+			mui.alert("点击学生姓名查看详情。")
+		});
+	</script>

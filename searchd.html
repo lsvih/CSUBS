@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript" src="js/mui.min.js"></script>
+		<script src="js/url.js"></script>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			header.mui-bar {
+				display: none;
+			}
+			.mui-bar-nav~.mui-content {
+				padding: 0;
+			}
+			.mui-table h4,
+			.mui-table h5,
+			.mui-table .mui-h5,
+			.mui-table .mui-h6,
+			.mui-table p {
+				margin-top: 0;
+			}
+			.mui-table h4 {
+				line-height: 21px;
+				font-weight: 500;
+			}
+			.mui-table .oa-icon {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+			}
+			.mui-table .oa-icon-star-filled {
+				color: #f14e41;
+			}
+			.mui-content>.mui-table-view:first-child {
+				margin-top: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="mui-content">
+
+			<div  class="mui-content">
+				<div class="mui-scroll">
+					<!--数据列表-->
+					<ul class="mui-table-view ">
+
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</body>
+
+
+	<script>
+
+		var url = surl + "person/getClassMate";	
+			mui.ajax(url, {
+				contentType: "application/x-www-form-urlencoded",
+				data: {
+					'userId': localStorage.tempuser
+				},
+				dataType: 'json',
+				type: 'post',
+				timeout: 10000,
+				success: function(data) {
+					localStorage.myclass = JSON.stringify(data);
+					var table = document.body.querySelector('.mui-table-view');
+					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+					for(var j=data.total;j--;) 
+						{
+						if (data.root[j].name == undefined) {
+								break;
+							}
+							var li = document.createElement('li');
+							li.className = 'mui-table-view-cell';
+							li.innerHTML = '<div onclick="openinfo('+ j +')" class="mui-navigate-right"><div class="mui-ellipsis">' + data.root[j].name + '</div></a>';
+							table.appendChild(li);
+					}
+				},
+				error: function(XMLHttpRequest, xmlhttp, errorThrown, data) {
+					mui.toast("网络连接错误");
+					console.log("XMLHttpRequest.readyState.searchd:" + XMLHttpRequest.readyState);
+					console.log("XMLHttpRequest.status:" + XMLHttpRequest.status);
+					return false;
+				}
+			});
+//		}
+//		if (mui.os.plus) {
+//			mui.plusReady(function() {
+//				setTimeout(function() {
+//					mui('#refreshContainer').pullRefresh().pullupLoading();
+//				}, 1000);
+//			});
+//		} else {
+//			mui.ready(function() {
+//				mui('#refreshContainer').pullRefresh().pullupLoading();
+//			});
+//		}
+
+		function openinfo(id) {
+			var myclasslist = JSON.parse(localStorage.myclass);
+			var classmatename = myclasslist.root[id].name;
+			var str = '性别：'+ myclasslist.root[id].sex + '\n 年级：' + myclasslist.root[id].grade + '\n 专业：'+ myclasslist.root[id].major + '\n 班级：'+ myclasslist.root[id].clazz + '\n 生日：'+ myclasslist.root[id].birthday + '\n 电话：'+ myclasslist.root[id].phoneNumber;
+			mui.alert(str,classmatename);
+		}
+	</script>
+
+</html>

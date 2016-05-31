@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script type="text/javascript" src="js/mui.min.js"></script>
+		<script src="js/url.js"></script>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			header.mui-bar {
+				display: none;
+			}
+			.mui-bar-nav~.mui-content {
+				padding: 0;
+			}
+			.mui-table h4,
+			.mui-table h5,
+			.mui-table .mui-h5,
+			.mui-table .mui-h6,
+			.mui-table p {
+				margin-top: 0;
+			}
+			.mui-table h4 {
+				line-height: 21px;
+				font-weight: 500;
+			}
+			.mui-table .oa-icon {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+			}
+			.mui-table .oa-icon-star-filled {
+				color: #f14e41;
+			}
+			.mui-content>.mui-table-view:first-child {
+				margin-top: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="mui-content">
+
+			<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<!--数据列表-->
+					<ul class="mui-table-view mui-table-view-chevron">
+
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</body>
+
+	<script>
+		mui.init({
+			pullRefresh: {
+				container: refreshContainer,
+				up: {
+					contentrefresh: "正在加载...",
+					contentnomore: '没有更多数据了',
+					callback: up
+				}
+			}
+		});
+		count = 1;
+		max = 0;
+		function up() {
+		if(max == 1 ){
+						
+			}
+			
+			var url = surl + "news/newsQueryOfTips";
+			mui.ajax(url, {
+				contentType: "application/x-www-form-urlencoded",
+				data: {
+					'page': count,
+					'limit' :10
+				},
+				dataType: 'json',
+				type: 'post',
+				timeout: 10000,
+			
+				success: function(data) {
+					localStorage.newsQueryOfTipsmax = data.total;
+					maxpage = Math.ceil(data.total/10);
+					var table = document.body.querySelector('.mui-table-view');
+					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+					if (count > maxpage){
+						mui.toast("没有更多数据了");	
+						mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+						return false;  }
+					for (i = 0; i < 10; i++) {
+						{
+							if (typeof data.root[i] == 'undefined'){break;}
+							var li = document.createElement('li')
+							li.className = 'mui-table-view-cell';
+							li.innerHTML = '<label id="'+ data.root[i].id +'"><div class="mui-navigate-right"><div class="mui-ellipsis">' + data.root[i].newsTitle + '</div><div class=" mui-h5">' + data.root[i].newsTime + '</div></label>';
+							table.appendChild(li);
+							
+						};
+					}; 
+					count ++;
+					mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
+				},
+				error: function(XMLHttpRequest, xmlhttp, errorThrown, data) {
+					mui.toast("网络连接错误");
+					console.log("XMLHttpRequest.readyState.newslist1:" + XMLHttpRequest.readyState);
+					console.log("XMLHttpRequest.status:" + XMLHttpRequest.status);
+					return false;
+				}
+			});
+		}
+		if (mui.os.plus) {
+			mui.plusReady(function() {
+				setTimeout(function() {
+					mui('#refreshContainer').pullRefresh().pullupLoading();
+				}, 1000);
+			});
+		} else {
+			mui.ready(function() {
+				mui('#refreshContainer').pullRefresh().pullupLoading();
+			});
+		}
+mui('#refreshContainer').on('tap', 'label', function(e) {
+localStorage.temppageid = this.id;
+			mui.openWindow({
+				url: 'tipsInfo.html',
+				id: this.id,
+				styles: {
+					top: '0px', //新页面顶部位置
+					bottom: '0' //新页面底部位置
+				},
+				extras: {
+					id: this.id
+				}
+			});
+});
+	</script>
+
+</html>

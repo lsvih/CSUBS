@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<script src="js/url.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+				
+				gestureConfig: {
+					doubletap: true
+				}
+				
+			});
+		
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="ask" class="mui-icon mui-icon-help  mui-pull-right"></a>
+			<h1 class="mui-title" id="admin">学生登录</h1>
+		</header>
+		<div class="mui-content">
+
+			<form class="mui-input-group">
+
+				<div class="mui-input-row">
+					<label>学号</label>
+					<input name="username" id="username" type="text" class="mui-input-clear" placeholder="请输入您的学号">
+				</div>
+				<div class="mui-input-row">
+					<label>密码</label>
+					<input name="password" id="password" type="password" class="mui-input-clear" placeholder="请输入密码">
+				</div>
+				<div class="mui-button-row">
+					<button class="mui-btn mui-btn-primary" onclick="checkreg();return false;">确认</button>
+				</div>
+			</form>
+			<div id="alert" style="text-align: center;font-size:15px;color: red;"></div>
+		</div>
+		<script>
+			function checkreg() {
+				var username = document.getElementById("username").value;
+				var password = document.getElementById("password").value;
+				if (username == "") {
+					mui.toast("请填写用户名！");
+					return false;
+				} else if (password == "") {
+					mui.toast("请填写密码！");
+					return false;
+				} else {
+					login();
+				}
+			}
+
+			function login() {
+				mui.toast("登陆中，请稍候");
+				var username = document.getElementById("username").value;
+				var password = document.getElementById("password").value;
+				localStorage.tmpPassword = password;
+				var jsonobj = {
+					"userId": username,
+					"password": password
+				};
+				var str = jsonobj;
+				var url = surl + "user/login";
+				mui.ajax(url, {
+					data: str,
+					dataType: 'json',
+					type: 'post',
+					timeout: 10000,
+					success: function(data) {
+						if (data.success == "false") {
+							mui.toast("用户名或密码错误。");
+							return false;
+						}
+						if (data.success == "true") {
+							loginok();
+							return false;
+						} else {
+							mui.toast("未知错误");
+							return false;
+						}
+					},
+					error: function(XMLHttpRequest, xmlhttp, errorThrown, data) {
+						mui.toast("网络连接错误");
+						console.log("XMLHttpRequest.readyState.login:" + XMLHttpRequest.readyState);
+						console.log("XMLHttpRequest.status:" + XMLHttpRequest.status);
+						return false;
+					}
+				});
+			}
+			document.getElementById('admin').addEventListener('doubletap', function() {
+				mui.openWindow({
+					id: 'login2',
+					url: 'login2.html'
+				});
+			})
+
+			function tempsave() {
+				localStorage.tempuser = document.getElementById("username").value;
+			}
+
+			function loginok() {
+				mui.toast("登陆成功");
+				tempsave();
+				mui.back();
+			}
+			document.getElementById('ask').addEventListener('tap', function() {
+				mui.alert("请向老师索要密码")
+			})
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script src="js/url.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			if (localStorage.tempuser == null || localStorage.tempuser == "") {
+				mui.alert("未登录");
+				mui.back();
+			}
+			
+			var jsonobj = {"userId": localStorage.tempuser};
+			var str = jsonobj;
+			var url = surl + "person/getMyInfo";
+			mui.ajax(url, {
+				data: str,
+				dataType: 'json',
+				type: 'post',
+				timeout: 10000,
+				success: function(data) {
+					document.getElementById("userid").innerText = localStorage.tempuser;
+					document.getElementById("username").innerText = data.name;
+					document.getElementById("sex").innerText = data.sex;
+					document.getElementById("grade").innerText = data.grade;
+					document.getElementById("major").innerText = data.major;
+					document.getElementById("class").innerText = data.clazz;
+					document.getElementById("birthday").innerText = data.birthday;
+					document.getElementById("phonenumber").innerText = data.phoneNumber;
+				},
+				error: function(XMLHttpRequest, xmlhttp, errorThrown, data) {
+					mui.toast("网络连接错误");
+					console.log("XMLHttpRequest.readyState.my:" + XMLHttpRequest.readyState);
+					console.log("XMLHttpRequest.status:" + XMLHttpRequest.status);
+					return false;
+				}
+			});
+		</script>
+		<style>
+			.mui-content {
+				position: fixed;
+				top: 46px;
+				background-color: #FFF;
+			}
+			.abxc {
+				top: 444px;
+			}
+			.kk{
+				position: absolute;
+				top: 70px;
+				padding: 5px;
+				width: 80%;
+			}
+			.d{
+				margin-top: 30px;
+			}
+			.mui-btn{
+				width: 70%;
+				
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar-top mui-bar">
+			<a class=" mui-action-back mui-icon mui-icon-arrowleft mui-pull-left"></a>
+			<a id="search" class="mui-icon mui-pull-right mui-icon-search"></a>
+			<h4 class="mui-title">个人中心</h4>
+
+		</header>
+		
+			<div class="mui-text-left mui-card kk">
+			<h4>姓名：<span id="username">加载中...</span></h4>
+			<h4>学号：<span id="userid">加载中...</span></h4>
+			<h4>性别：<span id="sex">加载中...</span></h4>
+			<h4>年级：<span id="grade">加载中...</span></h4>
+			<h4>专业：<span id="major">加载中...</span></h4>
+			<h4>班级：<span id="class">加载中...</span></h4>
+			<h4>生日：<span id="birthday">加载中...</span></h4>
+			<h4>电话号码：<span id="phonenumber">加载中...</span></h4>
+			<button class="d mui-btn mui-btn-negative mui-btn-block" onclick="loginout();">退出登陆</button>
+			<button class="mui-btn mui-btn-blue mui-btn-block" onclick="editpass();">修改密码</button>
+			</div>
+		
+	</body>
+	<script>
+	 document.getElementById('search').addEventListener('tap', function() {
+			mui.openWindow({
+				url: "search.html",
+				id: "search" 
+			});
+		})
+		function loginout() {
+			var url = surl + "user/loginOut";
+			mui.ajax(url, {
+				data: {'userId':localStorage.tempuser},
+				dataType: 'json',
+				type: 'post',
+				timeout: 10000,
+				success: function(data) {
+					localStorage.removeItem("tempuser");
+					mui.toast('您已退出登陆！');
+					mui.back();
+				},
+				error: function(XMLHttpRequest, xmlhttp, errorThrown, data) {
+					mui.toast("网络连接错误");
+					console.log("XMLHttpRequest.readyState.my:" + XMLHttpRequest.readyState);
+					console.log("XMLHttpRequest.status:" + XMLHttpRequest.status);
+					return false;
+				}
+			})
+		}
+		function editpass(){
+			mui.openWindow({
+						url: "editpass.html",
+						id: "editpass"
+					});
+		}
+	</script>
+
+</html>

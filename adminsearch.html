@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script src="js/url.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			if (localStorage.adminuser == null || localStorage.adminuser == "") {
+				mui.toast("未登录");
+				var ws = plus.webview.currentWebview();
+				plus.webview.close(ws);
+			}
+		</script>
+		<script>
+		function up(){
+			mui.openWindow({
+						url: "adminsearchresult.html",
+						id: "adminsearchresult"
+					});
+		}
+			var sex = "";
+
+			function change(k) {
+				if (k == 0) {
+					sex = "";return false;
+				} 
+				if (k == 1) {
+					sex = "男";return false;
+				} 
+				if (k == 2) {
+					sex = "女";return false;
+				} 
+			}
+
+			function adminsearch() {
+				localStorage.searchname =document.getElementById("name").value;
+				localStorage.searchsex =sex;
+				localStorage.searchuserid =document.getElementById("userid").value;
+				localStorage.searchmajor =document.getElementById("major").value;
+				localStorage.searchgrade =document.getElementById("grade").value;
+				localStorage.searchclass =document.getElementById("class").value;
+				localStorage.searchaddress =document.getElementById("address").value;
+				localStorage.searchpolitics_status =document.getElementById("politics_status").value;
+				localStorage.searchwork_in_class =document.getElementById("work_in_class").value;
+				localStorage.searchnation =document.getElementById("nation").value;
+				up();
+			}
+
+		
+		</script>
+		<style>
+			.mui-content {
+				position: fixed;
+				top: 46px;
+				background-color: #FFF;
+			}
+			.abxc {
+				top: 444px;
+			}
+			.kk {
+				position: absolute;
+				top: 70px;
+				padding: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar-top mui-bar">
+			<a class="mui-action-back mui-icon mui-icon-arrowleft mui-pull-left"></a>
+
+			<h4 class="mui-title">管理员高级查询页面</h4>
+
+		</header>
+		<div class="mui-text-left mui-card kk">
+			请输入要查询的学生信息：
+			<br />
+			<h5>查询为模糊查询，输入任意项的内容皆可</h5>
+			<br /> 姓名:
+			<input id="name" type="text" class="mui-input-clear"> 性别：
+			<form>
+				<label>不限</label>
+				<input type="radio" name="radio" checked="checked" onclick="change(0)" />
+				<label>男</label>
+				<input type="radio" name="radio" onclick="change(1)" />
+				<label>女</label>
+				<input type="radio" name="radio" onclick="change(2)" />
+			</form>
+			<br /> 学号:
+			<input id="userid" type="text" class="mui-input-clear"> 专业:
+			<input id="major" type="text" class="mui-input-clear"> 年级:
+			<input id="grade" type="text" class="mui-input-clear"> 班级:
+			<input id="class" type="text" class="mui-input-clear"> 地址:
+			<input id="address" type="text" class="mui-input-clear"> 政治面貌:
+			<input id="politics_status" type="text" class="mui-input-clear"> 班级职务:
+			<input id="work_in_class" type="text" class="mui-input-clear"> 祖籍:
+			<input id="nation" type="text" class="mui-input-clear">
+
+			<button class="mui-btn mui-btn-blue" onclick="adminsearch();">查询</button>
+		</div>
+	</body>
+
+</html>

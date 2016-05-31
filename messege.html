@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<script src="js/url.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			h5 {
+				margin: 5px 7px;
+				text-align: left;
+			}
+			textarea {
+				margin-bottom: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<iframe name="messege" id="messege" style="display: none;"></iframe>
+		<form id="form1" action="feedback/add" method="get" target="messege">
+			<div class="mui-input-row mui-input-group">
+				<label>标题</label>
+				<input name="title" id="title" type="text" class="mui-input-clear" placeholder="请输入标题">
+			</div>
+
+			<div class="mui-input-row" style="margin: 10px 5px;">
+				<textarea name="connect" id="textarea" rows="5" placeholder="请输入要反馈的内容"></textarea>
+			</div>
+			<div id="namelabel" class="mui-input-row mui-input-group">
+				<label>姓名</label>
+				<input name="name" id="name" type="text" class="mui-input-clear" placeholder="可选">
+			</div>
+			<div class="mui-input-row mui-input-group">
+				<label>联系方式</label>
+				<input name="contact" id="contact" type="text" class="mui-input-clear" placeholder="必填*">
+			</div>
+			<div class="mui-input-row mui-checkbox mui-left" onclick="anonymous()">
+				<label>匿名提交</label>
+				<input id="checkbox" name="checkbox" type="checkbox">
+			</div>
+
+			<div class="mui-button-row">
+				<div class="mui-btn mui-btn-primary" onclick="check();">提交</div>&nbsp;&nbsp;
+				<button class="mui-btn mui-btn-danger" onclick="cleardiv();">清除</button>
+
+			</div>
+			<h5>温馨提示：务必提交联系方式，我们将根据留的联系方式回复。</h5>
+			<h5 id="time" style="margin-top: 10px;text-align: center;"></h5>
+			<input id="hiddentime" name="time" style="display: none;" type="text">
+		</form>
+	</body>
+	<script>
+			localStorage.upuserid = "";
+			if (localStorage.adminuser == "" || localStorage.adminuser == null) {
+				if (localStorage.tempuser == "" || localStorage.tempuser == null) {
+					localStorage.ifuserid = "未登录";
+				} else {
+					localStorage.ifuserid = loalStorage.tempuser;
+				}
+			} else {
+				localStorage.ifuserid = localStorage.adminuser;
+			}
+		function check() {
+			var otitle = document.getElementById("title");
+			var ocontant = document.getElementById("textarea");
+			var oname = document.getElementById("name");
+			var ocontact = document.getElementById("contact");
+			if (otitle.value == "") {
+				mui.alert("请填写标题！", "提示");return false;
+			} else if (ocontant.value == "") {
+				mui.alert("请填写内容！", "提示");return false;
+			} else if (ocontact.value == "") {
+				mui.alert("请填写联系方式！", "提示");return false;
+			}
+			checkok();
+		}
+
+		function anonymous() {
+			if (document.getElementById("checkbox").checked == true) {
+				document.getElementById("namelabel").className += ' mui-hidden';
+				localStorage.upuserid = "";
+			} else {
+				document.getElementById("namelabel").className = 'mui-input-row mui-input-group';
+				localStorage.upuserid = localStorage.ifuserid;
+			}
+		}
+
+		function cleardiv() {
+			document.getElementById("title").value = '';
+			document.getElementById("name").value = '';
+			document.getElementById("contact").value = '';
+			document.getElementById("textarea").value = '';
+			document.getElementById("checkbox").checked = false;
+			anonymous();
+		}
+
+		function checkok() {
+			mui.toast("正在提交，请稍候…")
+			var url = surl + "feedback/add";
+			mui.ajax(url, {
+				contentType: "application/x-www-form-urlencoded",
+				dataType: 'json',
+				data: {
+					'title': document.getElementById("title").value,
+					'name': document.getElementById("name").value,
+					'connect': document.getElementById("contact").value,
+					'content': document.getElementById("textarea").value,
+					'userId': localStorage.upuserid
+				},
+				type: 'post',
+				timeout: 10000,
+				success: function(data) {
+					mui.toast("提交成功！请保持联系方式畅通！");
+					cleardiv();
+				},
+				error: function(XMLHttpRequest, xmlhttp, errorThrown, data) {
+					mui.toast("网络连接错误");
+					console.log("XMLHttpRequest.readyState.messege:" + XMLHttpRequest.readyState);
+					console.log("XMLHttpRequest.status:" + XMLHttpRequest.status);
+					return false;
+				}
+			});
+		}
+		var now = new Date();
+		var year = now.getFullYear();
+		var month = now.getMonth() + 1;
+		var day = now.getDate();
+		var hour = now.getHours();
+		var minute = now.getMinutes();
+		var second = now.getSeconds();
+		document.getElementById('time').innerHTML = (year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second);
+		document.getElementById("hiddentime").value = document.getElementById('time').innerHTML;
+	</script>
+
+</html>

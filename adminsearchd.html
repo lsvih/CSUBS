@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <script src="js/url.js" ></script>>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8">
+      	      		mui.init({
+	
+		subpages: [{ 
+			id: 'gradelist',
+			url: 'gradelist.html',
+			styles: {
+				top: '46px',
+				bottom: '0px',
+				bounce: 'vertical'
+			}
+		}]
+		});
+			var str = {"grade": localStorage.tempGrade};
+			var url = surl + 'news/getMaxCount';
+			
+		mui.ajax(url, {
+					contentType: "application/x-www-form-urlencoded",
+					data:str,
+					dataType: 'json',
+					type: 'post',
+					timeout: 10000,
+					success: function(data) { 
+						localStorage.GradeNewsMax = data.gradeMax+1;
+					},
+					error: function(XMLHttpRequest, xmlhttp, errorThrown, data) {
+						mui.toast("网络连接错误");
+						console.log("XMLHttpRequest.readyState.grade:" + XMLHttpRequest.readyState);
+						console.log("XMLHttpRequest.status:" + XMLHttpRequest.status);console.log("getclassmax failed");
+						return false;
+					}
+				});
+    </script>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-action-back mui-icon mui-icon-help  mui-pull-right"></a>
+			<h1 class="mui-title">年级版块</h1>
+		</header>
+</body>
